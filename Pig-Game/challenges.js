@@ -7,6 +7,7 @@ GAME RULES:
 - The player can choose to 'Hold', which means that his ROUND score gets added to his GLOBAL score. After that, it's the next player's turn
 - The first player to reach 100 points on GLOBAL score wins the game
 - A player looses his entire score when he rolls two 6 in a row. After that, it's the other player's turn
+- There's an input field where players can set the winning score
 
 */
 
@@ -67,9 +68,20 @@ document.querySelector('.btn-hold').addEventListener('click', function(){
 		// update UI
 		document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
+		var input = document.querySelector('.final-score').value;
+		// console.log(input);
+		var winningScore;
+
+		// undefined, 0, null or "" are coerced to false
+		if(input) {
+			winningScore = input;
+		} else {
+			winningScore = 100;
+		}
+
 		// check if player won the game
 
-		if (scores[activePlayer] >= 100) {
+		if (scores[activePlayer] >= winningScore) {
 			document.querySelector('#name-' + activePlayer).textContent = "Winner";
 			document.querySelector('.dice').style.display = 'none';
 			document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
