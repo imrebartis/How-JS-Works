@@ -1,29 +1,36 @@
+// BUDGET CONTROLLER
 //immediately envoked function expression (IIFE)
 var budgetController = (function() {
 
-	var x = 2;
-
-	return {
-		publicOne: function(b) {
-			return (x+b);
-		}
-	}
+	
 })();
 
+// UI CONTROLLER
 var UIController = (function(){
 
 	// code to come
 
-})(); // budgetController.publicOne(3) will render 5
+})();
 
+// GLOBAL APP CONTROLLER
 var controller = (function(budgetCtrl, UICtrl){
 
-	var y = budgetCtrl.publicOne(5);
-
-	return {
-		publicTwo: function() {
-			console.log(y);
-		}
+	var ctrlAddItem = function(){
+		// get input data
+		// add the item to the budget controller
+		// add the item to the UI
+		// calculate budget
+		// display budget
+		console.log('hullo')
 	}
 
-})(budgetController, UIController); // controller.publicTwo() will render 7
+	document.querySelector('.add__btn').addEventListener('click', ctrlAddItem);
+
+	document.addEventListener('keypress', function(event){
+
+		if (event.charCode===13 || event.which===13) {
+			ctrlAddItem();
+		}
+	})
+
+})(budgetController, UIController);
