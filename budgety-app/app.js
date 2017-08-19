@@ -8,23 +8,47 @@ var budgetController = (function() {
 // UI CONTROLLER
 var UIController = (function(){
 
-	// code to come
+	 var DOMstrings = {
+        inputType: '.add__type',
+        inputDescription: '.add__description',
+        inputValue: '.add__value',
+        inputBtn: '.add__btn'
+    };
+
+	return {
+		getinput: function(){
+
+			return {
+				type: document.querySelector(DOMstrings.inputType).value, // will be either inc or exp
+				description: document.querySelector(DOMstrings.inputDescription).value,
+				value: document.querySelector(DOMstrings.inputValue).value
+			}
+		},
+
+		getDOMStrings: function() {
+			return DOMstrings;
+		}
+	}
 
 })();
 
 // GLOBAL APP CONTROLLER
 var controller = (function(budgetCtrl, UICtrl){
 
+	// impporting getDOMStrings, so that we could use here DOM.inputBtn instead of '.add__btn'
+	var DOM = UIController.getDOMStrings();
+
 	var ctrlAddItem = function(){
 		// get input data
+		var input = UICtrl.getinput();
+		console.log(input);
 		// add the item to the budget controller
 		// add the item to the UI
 		// calculate budget
 		// display budget
-		console.log('hullo')
 	}
 
-	document.querySelector('.add__btn').addEventListener('click', ctrlAddItem);
+	document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
 
 	document.addEventListener('keypress', function(event){
 
