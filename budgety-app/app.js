@@ -1,5 +1,5 @@
 // BUDGET CONTROLLER
-//immediately envoked function expression (IIFE)
+//immediately invoked function expression (IIFE)
 var budgetController = (function() {
 
 	
@@ -34,27 +34,37 @@ var UIController = (function(){
 
 // GLOBAL APP CONTROLLER
 var controller = (function(budgetCtrl, UICtrl){
-
 	// impporting getDOMStrings, so that we could use here DOM.inputBtn instead of '.add__btn'
 	var DOM = UIController.getDOMStrings();
+
+	var setUpEventListeners = function(){
+		document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
+
+		document.addEventListener('keypress', function(event){
+
+		if (event.charCode===13 || event.which===13) {
+			ctrlAddItem();
+			}
+		});
+	};
 
 	var ctrlAddItem = function(){
 		// get input data
 		var input = UICtrl.getinput();
-		console.log(input);
+		// console.log(input);
 		// add the item to the budget controller
 		// add the item to the UI
 		// calculate budget
 		// display budget
+	};
+
+	return {
+		init: function(){
+			console.log('application\'s started');
+			setUpEventListeners();
+		}
 	}
 
-	document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
-
-	document.addEventListener('keypress', function(event){
-
-		if (event.charCode===13 || event.which===13) {
-			ctrlAddItem();
-		}
-	})
-
 })(budgetController, UIController);
+
+controller.init();
