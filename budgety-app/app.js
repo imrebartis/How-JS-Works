@@ -13,6 +13,14 @@ var budgetController = (function(){
 			this.description = description;
 			this.value = value;
 		};	
+
+	var calculateTotal = function(type){
+		var sum = 0;
+		data.allItems[type].forEach(function(cur){
+			sum += cur.value;
+		});
+		data.totals[type] = sum;
+	};
 	var data = {
 		allItems: {
 			exp: [],
@@ -21,7 +29,11 @@ var budgetController = (function(){
 		totals: {
 			exp: 0,
 			inc: 0
-		}
+		},
+		budget: 0,
+		// percentage is a value that doesn't exist first, that's why we use here -1
+		// to make it clear it doesn't exist yet
+		percentage: -1
 	};
 
 	return {
@@ -52,6 +64,31 @@ var budgetController = (function(){
 
 			// RETURN NEW ITEM
 			return newItem;
+		},
+
+		calculateBudget: function(){
+			// calculate total income & expenses
+			calculateTotal('exp');
+			calculateTotal('inc');
+
+			// calculate budget: inc - exp
+			data.budget = data.totals.inc - data.totals.exp;
+
+			// calculate percentage of inc spent
+			if (data.totals.inc > 0){
+				data.percentage = Math.round((data.totals.exp/data.totals.inc)*100);
+			} else {
+				data.percentage = -1;
+			}
+		},
+
+		getBudget: function(){
+			return {
+				budget: data.budget,
+                totalInc: data.totals.inc,
+                totalExp: data.totals.exp,
+                percentage: data.percentage
+			}
 		},
 
 		testing: function(){
@@ -100,7 +137,7 @@ var UIController = (function(){
 			newHtml = newHtml.replace('%value%', obj.value);
 
 			// insert HTML into DOM
-			// see documentaton: https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
+			// see documentation: https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
 			document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
 		},
 
@@ -146,12 +183,15 @@ var controller = (function(budgetCtrl, UICtrl){
 	var updateBudget = function(){
 
 		// Calculate the budget
+		budgetCtrl.calculateBudget();
 
 		// Return the budget
+		var budget = budgetCtrl.getBudget();
 
         // Display budget on UI
-
+        console.log(budget);
 	};
+
 	var ctrlAddItem = function(){
 		var input, newItem;
 		// get input data
