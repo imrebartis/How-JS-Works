@@ -111,7 +111,8 @@ var UIController = (function(){
         budgetLabel: '.budget__value',
         incomeLabel: '.budget__income--value',
         expensesLabel: '.budget__expenses--value',
-        percentageLabel: '.budget__expenses--percentage'
+        percentageLabel: '.budget__expenses--percentage',
+        container: '.container'
     };
 
 	return {
@@ -182,10 +183,11 @@ var UIController = (function(){
 
 // GLOBAL APP CONTROLLER
 var controller = (function(budgetCtrl, UICtrl){
-	// impporting getDOMStrings, so that we could use here DOM.inputBtn instead of '.add__btn'
-	var DOM = UIController.getDOMStrings();
-
+	
 	var setUpEventListeners = function(){
+		// importing getDOMStrings, so that we could use here DOM.inputBtn instead of '.add__btn'
+		var DOM = UIController.getDOMStrings();
+
 		document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
 
 		document.addEventListener('keypress', function(event){
@@ -194,6 +196,9 @@ var controller = (function(budgetCtrl, UICtrl){
 			ctrlAddItem();
 			}
 		});
+
+		// event delegation (container is the div that contains both income's & expense's i element, aka delete icon)
+		document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
 	};
 
 	var updateBudget = function(){
@@ -228,6 +233,28 @@ var controller = (function(budgetCtrl, UICtrl){
             // 5. Calculate & update budget
             updateBudget();
         }
+	};
+
+	var ctrlDeleteItem = function(event){
+		var itemID, splitID, type, ID;
+		// this will work only when clicking the i element, since it's the
+		// only one whose 4th parentNode has an id
+		itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+		// console.log(itemID);
+
+		if (itemID) {
+			// this will turn e.g. the 'income-0' string into an {'income', '0'} object
+			splitID = itemID.split('-');
+			type = splitID[0];
+			// use parseInt to turn the splitID[1] string into a number
+			ID = parseInt(splitID[1]);
+
+			// 1. delete item from data structure
+			// 2. delete item from UI
+			// 3. update & show new budget
+
+		}
 	};
 
 	return {
