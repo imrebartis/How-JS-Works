@@ -19,10 +19,10 @@ box5.clickMe();
 const box6 = {
     color: 'blue',
     position: 2,
-    clickMe: function() {
-    	// no need to use var self = this anymore, yippee!!!
+    clickMe() {
+        // no need to use var self = this anymore, yippee!!!
         document.querySelector('.blue').addEventListener('click', () => {
-            var str = 'This is box number ' + this.position + ' and it is ' + this.color;
+            const str = `This is box number ${this.position} and it is ${this.color}`;
             alert(str);
         });
     }
